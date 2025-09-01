@@ -1,8 +1,28 @@
 from flask import render_template, request, jsonify
 from bson import ObjectId
+import re
+
+def convert_video_links(content):
+    """Convertit les liens vidéo en balises HTML video"""
+    if not content:
+        return content
+    
+    video_pattern = r'(https?://[^\s]+\.(?:mp4|webm|ogg|mov|avi)(?:\?[^\s]*)?)'
+    
+    def replace_video_link(match):
+        video_url = match.group(1)
+        return f'''<video controls class="w-full max-w-2xl mx-auto my-4 rounded-lg shadow-lg">
+    <source src="{video_url}" type="video/mp4">
+    Votre navigateur ne supporte pas la lecture de vidéos.
+    <a href="{video_url}" target="_blank" class="text-pink-500 hover:text-pink-400">Télécharger la vidéo</a>
+</video>'''
+    
+    return re.sub(video_pattern, replace_video_link, content)
 
 def init_routes(app, searcher):
     """Initialise toutes les routes de l'application"""
+    
+    app.jinja_env.filters['convert_video_links'] = convert_video_links
     
     @app.route('/')
     def index():
