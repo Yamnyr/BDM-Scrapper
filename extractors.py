@@ -1,7 +1,3 @@
-# extractors.py
-# Ce module contient toutes les fonctions d'extraction des données HTML pour le Blog du Modérateur.
-# Chaque fonction est spécialisée dans l'extraction d'une partie spécifique d'un article.
-
 from bs4 import BeautifulSoup
 from datetime import datetime
 import re
