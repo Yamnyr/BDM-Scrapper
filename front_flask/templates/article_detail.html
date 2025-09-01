@@ -3,122 +3,142 @@
 {% block title %}{{ article.title }} - Blog du Modérateur{% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8 mx-auto">
-        <div class="mb-3">
-            <a href="javascript:history.back()" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left me-2"></i>
-                Retour aux résultats
-            </a>
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <a href="javascript:history.back()" class="btn-primary-modern">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Retour aux résultats
+        </a>
+    </div>
+
+    <article class="card-modern overflow-hidden">
+        {% if article.thumbnail %}
+        <div class="h-64 md:h-80 overflow-hidden">
+            <img src="{{ article.thumbnail }}" class="w-full h-full object-cover" alt="{{ article.title }}">
         </div>
-
-        <article class="card">
-            {% if article.thumbnail %}
-            <img src="{{ article.thumbnail }}" class="card-img-top" alt="{{ article.title }}" style="max-height: 400px; object-fit: cover;">
-            {% endif %}
+        {% endif %}
+        
+        <div class="p-8">
+            <h1 class="font-heading font-black text-3xl md:text-4xl text-white mb-6 leading-tight">{{ article.title }}</h1>
             
-            <div class="card-body">
-                <h1 class="card-title">{{ article.title }}</h1>
-                
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        {% if article.author %}
-                        <p class="mb-1">
-                            <i class="fas fa-user me-2"></i>
-                            <strong>Auteur:</strong> {{ article.author }}
-                        </p>
-                        {% endif %}
-                        {% if article.publication_date %}
-                        <p class="mb-1">
-                            <i class="fas fa-calendar me-2"></i>
-                            <strong>Date:</strong> {{ article.publication_date }}
-                        </p>
-                        {% endif %}
+             Modern metadata layout with improved spacing 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="space-y-3">
+                    {% if article.author %}
+                    <div class="flex items-center text-gray-300">
+                        <i class="fas fa-user mr-3 text-pink-500"></i>
+                        <span class="font-semibold mr-2">Auteur:</span>
+                        <span>{{ article.author }}</span>
                     </div>
-                    <div class="col-md-6">
-                        {% if article.category %}
-                        <p class="mb-1">
-                            <i class="fas fa-folder me-2"></i>
-                            <strong>Catégorie:</strong> 
-                            <span class="badge bg-primary">{{ article.category }}</span>
-                        </p>
-                        {% endif %}
-                        {% if article.subcategory %}
-                        <p class="mb-1">
-                            <i class="fas fa-tags me-2"></i>
-                            <strong>Sous-catégories:</strong> 
-                            <span class="badge bg-secondary">{{ article.subcategory }}</span>
-                        </p>
-                        {% endif %}
+                    {% endif %}
+                    {% if article.publication_date %}
+                    <div class="flex items-center text-gray-300">
+                        <i class="fas fa-calendar mr-3 text-pink-500"></i>
+                        <span class="font-semibold mr-2">Date:</span>
+                        <span>{{ article.publication_date }}</span>
                     </div>
+                    {% endif %}
                 </div>
-
-                {% if article.summary %}
-                <div class="alert alert-info">
-                    <h6><i class="fas fa-info-circle me-2"></i>Résumé</h6>
-                    {{ article.summary }}
-                </div>
-                {% endif %}
-
-                {% if article.table_of_contents %}
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6 class="mb-0">
-                            <i class="fas fa-list me-2"></i>
-                            Sommaire
-                        </h6>
+                <div class="space-y-3">
+                    {% if article.category %}
+                    <div class="flex items-center">
+                        <i class="fas fa-folder mr-3 text-pink-500"></i>
+                        <span class="font-semibold mr-2 text-gray-300">Catégorie:</span>
+                        <span class="badge-modern">{{ article.category }}</span>
                     </div>
-                    <div class="card-body">
-                        <ol>
-                            {% for item in article.table_of_contents %}
-                            <li>{{ item }}</li>
-                            {% endfor %}
-                        </ol>
+                    {% endif %}
+                    {% if article.subcategory %}
+                    <div class="flex items-center">
+                        <i class="fas fa-tags mr-3 text-pink-500"></i>
+                        <span class="font-semibold mr-2 text-gray-300">Sous-catégories:</span>
+                        <span class="bg-gray-600 text-gray-300 px-3 py-1 rounded-full text-sm">{{ article.subcategory }}</span>
                     </div>
+                    {% endif %}
                 </div>
-                {% endif %}
-
-                {% if article.content %}
-                <div class="content">
-                    <h5><i class="fas fa-file-text me-2"></i>Contenu</h5>
-                    <div style="white-space: pre-line; line-height: 1.6;">{{ article.content }}</div>
-                </div>
-                {% endif %}
-
-                {% if article.images %}
-                <div class="mt-4">
-                    <h5><i class="fas fa-images me-2"></i>Images de l'article</h5>
-                    <div class="row">
-                        {% for key, image in article.images.items() %}
-                        <div class="col-md-6 mb-3">
-                            <div class="card">
-                                <img src="{{ image.url }}" class="card-img-top" alt="{{ image.description }}" style="height: 200px; object-fit: cover;">
-                                {% if image.description %}
-                                <div class="card-body">
-                                    <p class="card-text small">{{ image.description }}</p>
-                                </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
             </div>
-            
-            <div class="card-footer">
+
+             Modern summary section with improved styling 
+            {% if article.summary %}
+            <div class="bg-blue-900/30 border border-blue-700/50 rounded-lg p-6 mb-8">
+                <h3 class="font-heading font-bold text-lg text-white mb-3">
+                    <i class="fas fa-info-circle mr-2 text-blue-400"></i>
+                    Résumé
+                </h3>
+                <p class="text-gray-300 leading-relaxed">{{ article.summary }}</p>
+            </div>
+            {% endif %}
+
+             Modern table of contents with improved styling 
+            {% if article.table_of_contents %}
+            <div class="card-modern p-6 mb-8">
+                <h3 class="font-heading font-bold text-lg text-white mb-4">
+                    <i class="fas fa-list mr-2 text-pink-500"></i>
+                    Sommaire
+                </h3>
+                <ol class="space-y-2 text-gray-300">
+                    {% for item in article.table_of_contents %}
+                    <li class="flex items-start">
+                        <span class="text-pink-500 mr-3 font-semibold">{{ loop.index }}.</span>
+                        <span>{{ item }}</span>
+                    </li>
+                    {% endfor %}
+                </ol>
+            </div>
+            {% endif %}
+
+             Modern content section with improved readability 
+            {% if article.content %}
+            <div class="mb-8">
+                <h3 class="font-heading font-bold text-xl text-white mb-6">
+                    <i class="fas fa-file-text mr-2 text-pink-500"></i>
+                    Contenu
+                </h3>
+                <div class="prose prose-invert prose-lg max-w-none">
+                    <div class="text-gray-300 leading-relaxed whitespace-pre-line">{{ article.content }}</div>
+                </div>
+            </div>
+            {% endif %}
+
+             Modern image gallery with improved layout 
+            {% if article.images %}
+            <div class="mb-8">
+                <h3 class="font-heading font-bold text-xl text-white mb-6">
+                    <i class="fas fa-images mr-2 text-pink-500"></i>
+                    Images de l'article
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% for key, image in article.images.items() %}
+                    <div class="card-modern overflow-hidden">
+                        <div class="h-48 overflow-hidden">
+                            <img src="{{ image.url }}" class="w-full h-full object-cover" alt="{{ image.description }}">
+                        </div>
+                        {% if image.description %}
+                        <div class="p-4">
+                            <p class="text-gray-300 text-sm">{{ image.description }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+         Modern footer with improved styling 
+        <div class="bg-gray-800/50 px-8 py-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
+            <div>
                 {% if article.url %}
-                <a href="{{ article.url }}" target="_blank" class="btn btn-primary">
-                    <i class="fas fa-external-link-alt me-2"></i>
+                <a href="{{ article.url }}" target="_blank" class="btn-primary-modern">
+                    <i class="fas fa-external-link-alt mr-2"></i>
                     Voir l'article original
                 </a>
                 {% endif %}
-                <small class="text-muted ms-3">
-                    <i class="fas fa-clock me-1"></i>
-                    Scrapé le {{ article.scraped_at[:10] if article.scraped_at else 'N/A' }}
-                </small>
             </div>
-        </article>
-    </div>
+            <div class="text-gray-400 text-sm">
+                <i class="fas fa-clock mr-2"></i>
+                Scrapé le {{ article.scraped_at[:10] if article.scraped_at else 'N/A' }}
+            </div>
+        </div>
+    </article>
 </div>
 {% endblock %}

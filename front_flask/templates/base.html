@@ -1,73 +1,137 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Recherche Articles - Blog du Modérateur{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;900&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* Updated to modern dark theme with semantic design tokens */
+        :root {
+            --background: #111827;
+            --foreground: #ffffff;
+            --card: #1f2937;
+            --card-foreground: #ffffff;
+            --popover: #374151;
+            --popover-foreground: #ffffff;
+            --primary: #ec4899;
+            --primary-foreground: #ffffff;
+            --secondary: #374151;
+            --secondary-foreground: #ffffff;
+            --muted: #6b7280;
+            --muted-foreground: #ffffff;
+            --accent: #ec4899;
+            --accent-foreground: #ffffff;
+            --destructive: #dc2626;
+            --destructive-foreground: #ffffff;
+            --border: #4b5563;
+            --input: #1f2937;
+            --ring: #ec4899;
+            --radius: 0.5rem;
+        }
+        
         body {
-            background-color: #f8f9fa;
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: 'Open Sans', sans-serif;
         }
-        .navbar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .font-heading {
+            font-family: 'Montserrat', sans-serif;
         }
-        .search-card {
+        
+        .card-modern {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-primary-modern {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
             border: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
+            border-radius: var(--radius);
+            padding: 12px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
-        .btn-search {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 25px;
-            padding: 10px 30px;
-        }
-        .btn-search:hover {
+        
+        .btn-primary-modern:hover {
+            background-color: #db2777;
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4);
         }
-        .article-card {
-            border: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            transition: transform 0.2s;
+        
+        .input-modern {
+            background-color: var(--input);
+            border: 1px solid var(--border);
+            color: var(--foreground);
+            border-radius: var(--radius);
+            padding: 12px 16px;
         }
-        .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        
+        .input-modern:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
         }
+        
         .stats-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border-radius: 15px;
+            background: linear-gradient(135deg, var(--primary) 0%, #be185d 100%);
+            border-radius: var(--radius);
+            padding: 24px;
+            text-align: center;
+            color: var(--primary-foreground);
         }
-        .form-control:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        
+        .article-card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
-        .form-select:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        
+        .article-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--accent);
+        }
+        
+        .badge-modern {
+            background-color: var(--accent);
+            color: var(--accent-foreground);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .navbar-modern {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            border-bottom: 1px solid var(--border);
         }
     </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url_for('index') }}">
-                <i class="fas fa-search me-2"></i>
-                Recherche Articles BDM
-            </a>
+<body class="min-h-screen">
+    <nav class="navbar-modern shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="{{ url_for('index') }}" class="flex items-center space-x-3 text-white hover:text-pink-300 transition-colors">
+                    <i class="fas fa-search text-2xl"></i>
+                    <span class="font-heading font-black text-xl">Recherche Articles BDM</span>
+                </a>
+            </div>
         </div>
     </nav>
 
-    <main class="container mt-4">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {% block content %}{% endblock %}
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

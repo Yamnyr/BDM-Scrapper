@@ -1,116 +1,108 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-8 mx-auto">
-         Statistiques 
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <div class="card stats-card text-center p-3">
-                    <h3>{{ stats.total_articles }}</h3>
-                    <p class="mb-0">Articles</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card stats-card text-center p-3">
-                    <h3>{{ stats.total_authors }}</h3>
-                    <p class="mb-0">Auteurs</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card stats-card text-center p-3">
-                    <h3>{{ stats.total_categories }}</h3>
-                    <p class="mb-0">Catégories</p>
-                </div>
-            </div>
+<div class="max-w-4xl mx-auto">
+     Modern stats cards with improved spacing and typography 
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="stats-card">
+            <div class="text-3xl font-black mb-2">{{ stats.total_articles }}</div>
+            <div class="text-sm font-medium opacity-90">Articles</div>
         </div>
-
-         Formulaire de recherche 
-        <div class="card search-card">
-            <div class="card-header bg-white">
-                <h2 class="card-title text-center mb-0">
-                    <i class="fas fa-search me-2"></i>
-                    Rechercher des articles
-                </h2>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST" action="{{ url_for('search') }}">
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="title" class="form-label">
-                                <i class="fas fa-heading me-1"></i>
-                                Recherche dans le titre
-                            </label>
-                            <input type="text" class="form-control" id="title" name="title" 
-                                   placeholder="Mots-clés dans le titre...">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="author" class="form-label">
-                                <i class="fas fa-user me-1"></i>
-                                Auteur
-                            </label>
-                            <select class="form-select" id="author" name="author">
-                                <option value="">Tous les auteurs</option>
-                                {% for author in authors %}
-                                <option value="{{ author }}">{{ author }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label for="category" class="form-label">
-                                <i class="fas fa-folder me-1"></i>
-                                Catégorie
-                            </label>
-                            <select class="form-select" id="category" name="category">
-                                <option value="">Toutes les catégories</option>
-                                {% for category in categories %}
-                                <option value="{{ category }}">{{ category }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="subcategory" class="form-label">
-                                <i class="fas fa-tags me-1"></i>
-                                Sous-catégorie
-                            </label>
-                            <select class="form-select" id="subcategory" name="subcategory">
-                                <option value="">Toutes les sous-catégories</option>
-                                {% for subcategory in subcategories %}
-                                <option value="{{ subcategory }}">{{ subcategory }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="row mb-4">
-                        <div class="col-md-6">
-                            <label for="date_start" class="form-label">
-                                <i class="fas fa-calendar-alt me-1"></i>
-                                Date de début
-                            </label>
-                            <input type="date" class="form-control" id="date_start" name="date_start">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="date_end" class="form-label">
-                                <i class="fas fa-calendar-alt me-1"></i>
-                                Date de fin
-                            </label>
-                            <input type="date" class="form-control" id="date_end" name="date_end">
-                        </div>
-                    </div>
-
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary btn-search">
-                            <i class="fas fa-search me-2"></i>
-                            Rechercher
-                        </button>
-                    </div>
-                </form>
-            </div>
+        <div class="stats-card">
+            <div class="text-3xl font-black mb-2">{{ stats.total_authors }}</div>
+            <div class="text-sm font-medium opacity-90">Auteurs</div>
         </div>
+        <div class="stats-card">
+            <div class="text-3xl font-black mb-2">{{ stats.total_categories }}</div>
+            <div class="text-sm font-medium opacity-90">Catégories</div>
+        </div>
+    </div>
+
+     Modern search form with improved layout and dark theme 
+    <div class="card-modern p-8">
+        <div class="text-center mb-8">
+            <h1 class="font-heading font-black text-3xl text-white mb-2">
+                <i class="fas fa-search mr-3 text-pink-500"></i>
+                Rechercher des articles
+            </h1>
+            <p class="text-gray-400">Trouvez les articles qui vous intéressent</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('search') }}" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="title" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fas fa-heading mr-2 text-pink-500"></i>
+                        Recherche dans le titre
+                    </label>
+                    <input type="text" class="input-modern w-full" id="title" name="title" 
+                           placeholder="Mots-clés dans le titre...">
+                </div>
+                <div>
+                    <label for="author" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fas fa-user mr-2 text-pink-500"></i>
+                        Auteur
+                    </label>
+                    <select class="input-modern w-full" id="author" name="author">
+                        <option value="">Tous les auteurs</option>
+                        {% for author in authors %}
+                        <option value="{{ author }}">{{ author }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="category" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fas fa-folder mr-2 text-pink-500"></i>
+                        Catégorie
+                    </label>
+                    <select class="input-modern w-full" id="category" name="category">
+                        <option value="">Toutes les catégories</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label for="subcategory" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fas fa-tags mr-2 text-pink-500"></i>
+                        Sous-catégorie
+                    </label>
+                    <select class="input-modern w-full" id="subcategory" name="subcategory">
+                        <option value="">Toutes les sous-catégories</option>
+                        {% for subcategory in subcategories %}
+                        <option value="{{ subcategory }}">{{ subcategory }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="date_start" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fas fa-calendar-alt mr-2 text-pink-500"></i>
+                        Date de début
+                    </label>
+                    <input type="date" class="input-modern w-full" id="date_start" name="date_start">
+                </div>
+                <div>
+                    <label for="date_end" class="block text-sm font-semibold text-gray-300 mb-2">
+                        <i class="fas fa-calendar-alt mr-2 text-pink-500"></i>
+                        Date de fin
+                    </label>
+                    <input type="date" class="input-modern w-full" id="date_end" name="date_end">
+                </div>
+            </div>
+
+            <div class="text-center pt-4">
+                <button type="submit" class="btn-primary-modern">
+                    <i class="fas fa-search mr-2"></i>
+                    Rechercher
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
