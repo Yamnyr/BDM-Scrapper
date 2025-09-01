@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}{{ article.title }} - Blog du Modérateur{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="mb-3">
+            <a href="javascript:history.back()" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>
+                Retour aux résultats
+            </a>
+        </div>
+
+        <article class="card">
+            {% if article.thumbnail %}
+            <img src="{{ article.thumbnail }}" class="card-img-top" alt="{{ article.title }}" style="max-height: 400px; object-fit: cover;">
+            {% endif %}
+            
+            <div class="card-body">
+                <h1 class="card-title">{{ article.title }}</h1>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        {% if article.author %}
+                        <p class="mb-1">
+                            <i class="fas fa-user me-2"></i>
+                            <strong>Auteur:</strong> {{ article.author }}
+                        </p>
+                        {% endif %}
+                        {% if article.publication_date %}
+                        <p class="mb-1">
+                            <i class="fas fa-calendar me-2"></i>
+                            <strong>Date:</strong> {{ article.publication_date }}
+                        </p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if article.category %}
+                        <p class="mb-1">
+                            <i class="fas fa-folder me-2"></i>
+                            <strong>Catégorie:</strong> 
+                            <span class="badge bg-primary">{{ article.category }}</span>
+                        </p>
+                        {% endif %}
+                        {% if article.subcategory %}
+                        <p class="mb-1">
+                            <i class="fas fa-tags me-2"></i>
+                            <strong>Sous-catégories:</strong> 
+                            <span class="badge bg-secondary">{{ article.subcategory }}</span>
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if article.summary %}
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>Résumé</h6>
+                    {{ article.summary }}
+                </div>
+                {% endif %}
+
+                {% if article.table_of_contents %}
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="fas fa-list me-2"></i>
+                            Sommaire
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ol>
+                            {% for item in article.table_of_contents %}
+                            <li>{{ item }}</li>
+                            {% endfor %}
+                        </ol>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if article.content %}
+                <div class="content">
+                    <h5><i class="fas fa-file-text me-2"></i>Contenu</h5>
+                    <div style="white-space: pre-line; line-height: 1.6;">{{ article.content }}</div>
+                </div>
+                {% endif %}
+
+                {% if article.images %}
+                <div class="mt-4">
+                    <h5><i class="fas fa-images me-2"></i>Images de l'article</h5>
+                    <div class="row">
+                        {% for key, image in article.images.items() %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <img src="{{ image.url }}" class="card-img-top" alt="{{ image.description }}" style="height: 200px; object-fit: cover;">
+                                {% if image.description %}
+                                <div class="card-body">
+                                    <p class="card-text small">{{ image.description }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="card-footer">
+                {% if article.url %}
+                <a href="{{ article.url }}" target="_blank" class="btn btn-primary">
+                    <i class="fas fa-external-link-alt me-2"></i>
+                    Voir l'article original
+                </a>
+                {% endif %}
+                <small class="text-muted ms-3">
+                    <i class="fas fa-clock me-1"></i>
+                    Scrapé le {{ article.scraped_at[:10] if article.scraped_at else 'N/A' }}
+                </small>
+            </div>
+        </article>
+    </div>
+</div>
+{% endblock %}
