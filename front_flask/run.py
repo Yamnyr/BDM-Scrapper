@@ -3,7 +3,7 @@
 Script de lancement de l'application Flask
 """
 
-from app import app
+from app import create_app
 
 if __name__ == '__main__':
     print("🚀 Démarrage de l'application de recherche d'articles...")
@@ -11,4 +11,5 @@ if __name__ == '__main__':
     print("🔍 API disponible sur: http://localhost:5000/api/search")
     print("💾 Assurez-vous que MongoDB est démarré avec la base 'blogdumoderateur'")
     
+    app = create_app()
     app.run(debug=True, host='0.0.0.0', port=5000)
