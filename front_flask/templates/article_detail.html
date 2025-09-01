@@ -21,7 +21,6 @@
         <div class="p-8">
             <h1 class="font-heading font-black text-3xl md:text-4xl text-white mb-6 leading-tight">{{ article.title }}</h1>
             
-             Modern metadata layout with improved spacing 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div class="space-y-3">
                     {% if article.author %}
@@ -91,7 +90,7 @@
                     Contenu
                 </h3>
                 <div class="prose prose-invert prose-lg max-w-none">
-                    <div class="text-gray-300 leading-relaxed whitespace-pre-line">{{ article.content | convert_video_links | safe }}</div>
+                    <div class="text-gray-300 leading-relaxed whitespace-pre-line">{{ article.content | process_content | safe }}</div>
                 </div>
             </div>
             {% endif %}

@@ -19,10 +19,37 @@ def convert_video_links(content):
     
     return re.sub(video_pattern, replace_video_link, content)
 
+def convert_markdown_titles(content):
+    """Convertit les titres Markdown (##) en balises HTML"""
+    if not content:
+        return content
+    
+    # Conversion des titres de niveau 2 (##)
+    content = re.sub(r'^## (.+)$', r'<h2 class="text-2xl font-bold text-gray-100 mt-8 mb-4 border-l-4 border-pink-500 pl-4">\1</h2>', content, flags=re.MULTILINE)
+    
+    # Conversion des titres de niveau 3 (###)
+    content = re.sub(r'^### (.+)$', r'<h3 class="text-xl font-semibold text-gray-200 mt-6 mb-3">\1</h3>', content, flags=re.MULTILINE)
+    
+    # Conversion des titres de niveau 1 (#) si présents
+    content = re.sub(r'^# (.+)$', r'<h1 class="text-3xl font-bold text-gray-100 mt-8 mb-6 border-b-2 border-pink-500 pb-2">\1</h1>', content, flags=re.MULTILINE)
+    
+    return content
+
+def process_content(content):
+    """Traite le contenu pour convertir les vidéos et les titres Markdown"""
+    if not content:
+        return content
+    
+    # D'abord les titres Markdown, puis les vidéos
+    content = convert_markdown_titles(content)
+    content = convert_video_links(content)
+    
+    return content
+
 def init_routes(app, searcher):
     """Initialise toutes les routes de l'application"""
     
-    app.jinja_env.filters['convert_video_links'] = convert_video_links
+    app.jinja_env.filters['process_content'] = process_content
     
     @app.route('/')
     def index():

@@ -152,7 +152,6 @@ def extract_table_of_contents(soup):
     return []
 
 def extract_images(soup):
-
     images = {}
     content_selectors = [
         '.entry-content',
@@ -183,45 +182,64 @@ def extract_images(soup):
     # Extraction des images dans la zone de contenu
     img_elements = content_area.find_all('img')
     for i, img in enumerate(img_elements, 1):
-        img_url = img.get('src') or img.get('data-src') or img.get('data-lazy-src')
-        if img_url:
-            # Construction de l'URL absolue de l'image
-            if img_url.startswith('//'):
-                img_url = 'https:' + img_url
-            elif img_url.startswith('/'):
-                img_url = BASE_URL + img_url
+        img_url = (
+            img.get('src')
+            or img.get('data-src')
+            or img.get('data-lazy-src')
+        )
 
-            # Extraction de la description de l'image
-            description = (
-                img.get('alt') or
-                img.get('title') or
-                img.get('data-caption') or
-                ""
-            ).strip()
+        # Vérifier le srcset pour prendre la meilleure qualité
+        if img.has_attr("srcset"):
+            candidates = [s.split(" ")[0] for s in img["srcset"].split(",")]
+            if candidates:
+                img_url = candidates[-1]  # la plus grande image
 
-            # Recherche de légende dans les éléments parents (figcaption)
-            if not description:
-                figure_parent = img.find_parent('figure')
-                if figure_parent:
-                    caption = figure_parent.find('figcaption')
-                    if caption:
-                        description = caption.get_text(strip=True)
+        # Vérifier si <figure><a href="...">
+        figure_parent = img.find_parent("figure")
+        if figure_parent:
+            link = figure_parent.find("a", href=True)
+            if link and link["href"].lower().endswith((".jpg", ".jpeg", ".png", ".webp", ".gif")):
+                img_url = link["href"]
 
-            # Filtrage des images trop petites (icônes, éléments décoratifs)
-            width = img.get('width')
-            height = img.get('height')
-            if width and width.isdigit() and int(width) < 200:
-                continue
+        # Ignorer les placeholders inline SVG
+        if not img_url or img_url.startswith("data:image"):
+            continue
 
-            images[f"image_{i}"] = {
-                "url": img_url,
-                "description": description,
-                "alt": img.get('alt', ''),
-                "width": width,
-                "height": height
-            }
+        # Construction de l'URL absolue
+        if img_url.startswith("//"):
+            img_url = "https:" + img_url
+        elif img_url.startswith("/"):
+            img_url = BASE_URL + img_url
+
+        # Description / légende
+        description = (
+            img.get("alt")
+            or img.get("title")
+            or img.get("data-caption")
+            or ""
+        ).strip()
+
+        if not description and figure_parent:
+            caption = figure_parent.find("figcaption")
+            if caption:
+                description = caption.get_text(strip=True)
+
+        # Filtrer les petites images décoratives
+        width = img.get("width")
+        height = img.get("height")
+        if width and width.isdigit() and int(width) < 200:
+            continue
+
+        images[f"image_{i}"] = {
+            "url": img_url,
+            "description": description,
+            "alt": img.get("alt", ""),
+            "width": width,
+            "height": height
+        }
 
     return images
+
 
 def extract_date(soup):
 
